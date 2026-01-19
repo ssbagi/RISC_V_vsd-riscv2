@@ -17,19 +17,19 @@
 
 ## Understanding Check (Mandatory)
 - Where is the RISC-V program located in the vsd-riscv2 repository?
-  The RISC-V program is located in the samples directory.
+  - The RISC-V program is located in the samples directory.
   
 - How is the program compiled and loaded into memory?
-  For compialtion we need to use riscv gcc command. Example : riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c .
-  Loading into memory means like how initally we did compialtion on the terminal. Here we need dump the binary file onto the FPGA Board using Flashing.
-  make riscv_logo.bram.hex ------ compile
-  sudo make flash          ------ Flash
+  - For compialtion we need to use riscv gcc command. Example : riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c .
+  - Loading into memory means like how initally we did compialtion on the terminal. Here we need dump the binary file onto the FPGA Board using Flashing.
+  - make riscv_logo.bram.hex ------ compile
+  - sudo make flash          ------ Flash
   
 - How does the RISC-V core access memory and memory-mapped IO?
-  Refering from the datasheet given. The RISC-V core access memory using SPI lines IOB_34a, IOB_32a, IOB_33b and IOB_35b. There are several other DPIO pins and several GPIO pins.
+  - Refering from the datasheet given. The RISC-V core access memory using SPI lines IOB_34a, IOB_32a, IOB_33b and IOB_35b. There are several other DPIO pins and several GPIO pins.
   
 - Where would a new FPGA IP block logically integrate in this system?
-  The new FPGA IP block will sit inside or reliazed in the Programmable Logic Blocks (PLB). In turn these contain the LUT's and DFF. Just like we have TERASIC FPGA for programming the Labs.
+  - The new FPGA IP block will sit inside or reliazed in the Programmable Logic Blocks (PLB). In turn these contain the LUT's and DFF. Just like we have TERASIC FPGA for programming the Labs.
 
 
 
