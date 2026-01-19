@@ -21,6 +21,9 @@
   
 - How is the program compiled and loaded into memory?
   For compialtion we need to use riscv gcc command. Example : riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c .
+  Loading into memory means like how initally we did compialtion on the terminal. Here we need dump the binary file onto the FPGA Board using Flashing.
+  make riscv_logo.bram.hex ------ compile
+  sudo make flash          ------ Flash
   
 - How does the RISC-V core access memory and memory-mapped IO?
   Refering from the datasheet given. The RISC-V core access memory using SPI lines IOB_34a, IOB_32a, IOB_33b and IOB_35b. There are several other DPIO pins and several GPIO pins.
