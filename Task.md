@@ -2,7 +2,7 @@
 
 ## Environment Setup : Initial Setup
 
-<img width="940" height="503" alt="image" src="https://github.com/user-attachments/assets/976619e6-9375-42e4-876a-07f8949b4033" />
+<img width="1917" height="1032" alt="image" src="https://github.com/user-attachments/assets/785f6ba3-e49d-4fd4-b48a-6528ad87602c" />
 
 <img width="941" height="504" alt="image" src="https://github.com/user-attachments/assets/71411eec-9092-4cc4-8b59-09d00336080e" />
 
