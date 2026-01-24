@@ -111,11 +111,13 @@ endmodule
 
 If we observe at T = 100ns. We see Writing to 00003D6C. After that write_enable = 1. Hence, Until write_enable becomes 1. It always gives previous written value.
 
-<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/146d21f6-d593-4d13-aa22-c6012f5b4e92" />
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/211a91ae-67e6-4ff0-a9a8-4dc8eba3d36f" />
+
 
 The write_enable = 1. We see multiple writes happening to the register on every clk posedge. 
 
-<img width="940" height="129" alt="image" src="https://github.com/user-attachments/assets/775d0a53-84ce-4606-aa6c-ee78ee003d0d" />
+<img width="1918" height="337" alt="image" src="https://github.com/user-attachments/assets/7c5c9987-439f-40c0-a889-9640daf248b8" />
+
 
 
 # Integration the GPIO into the RISC-V Core
