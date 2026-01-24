@@ -38,6 +38,7 @@ always @(posedge clk) begin
 ```
 
 Memory Mapped Region.
+```
     /*
       Memory-mapped IO in IO page : (0x0040_0000 : 0x007F_FFFF)
          - GPIO and UART peripherals are memory mapped in this range.
@@ -50,7 +51,7 @@ Memory Mapped Region.
    wire isRAM  = !isIO;
   
   wire uart_valid = (isGPIO && gpio_out_enable) | (isIO & mem_wstrb & mem_wordaddr[IO_UART_DAT_bit]);
-    
+```    
 
 # GPIO IP Specification
 
