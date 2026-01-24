@@ -580,7 +580,7 @@ endmodule
 
 # Whole SoC Waveform
 
-Developing the Testbench : 
+Developing the Testbench : I will use the Waveform simulation for the SoC in the Toolchain I could not do. 
 
 
 # YOSYS, ROUTING FPGA COMPIALTION
