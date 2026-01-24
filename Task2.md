@@ -7,19 +7,24 @@ The Basic SoC Block daigram overview. The details as per my understanding. There
 
 
 Source and Destination Registers :
+```
 // Source and destination registers
    wire [4:0] rs1Id = instr[19:15];
    wire [4:0] rs2Id = instr[24:20];
    wire [4:0] rdId  = instr[11:7];
+```
 
 CPU Read Registers from the Register File  :
+```
       FETCH_REGS: begin
          rs1 <= RegisterBank[rs1Id];
          rs2 <= RegisterBank[rs2Id];
          state <= EXECUTE;
       end
+```
 
 CPU Write data to Registers : 
+```
 always @(posedge clk) begin
       if(!resetn) begin
          PC    <= 0;
@@ -30,6 +35,7 @@ always @(posedge clk) begin
        // $display("r%0d <= %b (%d) (%d)",rdId,writeBackData,writeBackData,$signed(writeBackData));
        // For displaying what happens.
     end
+```
 
 Memory Mapped Region.
     /*
@@ -47,6 +53,14 @@ Memory Mapped Region.
     
 
 # GPIO IP Specification
+
+Participants will:
+- Create a new RTL module for the GPIO IP
+- Implement:
+  - Register storage
+  - Write logic
+  - Readback logic
+  - Follow synchronous design principles
 
 
 
