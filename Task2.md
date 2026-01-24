@@ -578,6 +578,18 @@ endmodule
 
 ```
 
+# Whole SoC Waveform
+
+Developing the Testbench : 
+
+
+# YOSYS, ROUTING FPGA COMPIALTION
+
+
+<img width="940" height="528" alt="image" src="https://github.com/user-attachments/assets/126055ed-7a03-4f4c-bf53-4721178f3c7c" />
+
+
+<img width="940" height="528" alt="image" src="https://github.com/user-attachments/assets/499825d0-dd9b-43e8-9d85-22de37f72255" />
 
 
 
