@@ -47,7 +47,7 @@ Memory Mapped Region.
          - In binary : 0000_0100_xxxx_xxxx_xxxx_xxxx_xxxx_xxxx - 0000_0111_xxxx_xxxx_xxxx_xxxx_xxxx_xxxx
    */
    wire isIO   = mem_addr[22];
-   wire isGPIO = isIO & (mem_addr[21:20] == 2'b00); // GPIO mapped at 0x0040_0000 - 0x005F_FFFF
+   wire isGPIO = ((mem_addr & 32'hFFFF_FF00) == 32'h2000_0000); // Changed the Address MAP : 2000_0000 to 2000_00FF
    wire isRAM  = !isIO;
   
   wire uart_valid = (isGPIO && gpio_out_enable) | (isIO & mem_wstrb & mem_wordaddr[IO_UART_DAT_bit]);
