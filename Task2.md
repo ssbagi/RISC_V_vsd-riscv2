@@ -73,7 +73,7 @@ Participants will:
 
 
 ```
-GPIO IP VERILOG CODE
+GPIO IP VERILOG CODE : I have developed three Types. I prefer Type 3 for integration only.
 
 Type 1 :
 
@@ -173,6 +173,48 @@ module gpio_ip(
 
 endmodule
 
+TYPE 3 : GPIO General with GPIO_EN pin removed the GPIO_ADDR. 
+
+module gpio_ip(
+    input clk,
+    input rst_n,
+    input gpio_en,              // GPIO Enable Signal : To make sure only GPIO address is accessed.
+    // input [31:0] gpio_addr,  // GPIO Address Input : Not required as only one register is used for GPIO. So, no address decoding is required.
+    input [31:0] gpio_in,
+    input write_enable,
+    output reg [31:0] gpio_out,
+    output reg out_enable
+); 
+    reg[31:0] gpio_in_reg; // Memory to store the last written value. 32-bit wide Register. 
+    // GPIO Register Address is 0x2000_0000
+    // Using only one register for GPIO. So, no need of address decoding.
+    // Synchronous Clock with Synchronous reset.
+    always @(posedge clk) begin
+        if(!rst_n) begin
+            gpio_out <= 32'b0;
+            gpio_in_reg <= 32'b0;
+            out_enable <= 1'b0;
+        end
+        else if (gpio_en) begin
+            if(write_enable == 1'b1) begin
+                gpio_in_reg <= gpio_in;
+                /*
+                    It's good not to change the state of the gpio_out ---------- Power consumption due to switching of states.
+                    gpio_out <= 32'bz;
+                    While writing we don't need to read the gpio_out. So, disable the output.
+                */
+                out_enable <= 1'b1;
+            end
+            else if(write_enable == 1'b0) begin
+                gpio_out <= gpio_in_reg;
+                out_enable <= 1'b0;
+            end
+        end
+    end
+
+endmodule
+
+
 ```
 
 # GPIO Simulation Waveform : One 32 bit Register Only
@@ -201,6 +243,15 @@ At Time 1560ns we observe that WE = 0. It reads the latest written Register valu
 
 <img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/4f86b7d7-a609-40f8-ab46-e88bf1f706d9" />
 
+# GPIO EN 
+
+If we observe at time 105ns we observe gpio_en = 1, write_enable = 1, gpio_addr = 0x2000_0000 We write it to the GPIO Register. 
+
+<img width="1913" height="880" alt="image" src="https://github.com/user-attachments/assets/befa4c09-ec8f-4a3d-ae79-f63a87a5644c" />
+
+At time = 115ns we observe that write_en = 0, and the gpio_addr = 0x2000_0000. At gpio_out previous written value is given as output.
+
+<img width="1918" height="880" alt="image" src="https://github.com/user-attachments/assets/1a2e35b0-f1db-4fbc-b6fd-8dafa89b7b6e" />
 
 
 # Integration the GPIO into the RISC-V Core
