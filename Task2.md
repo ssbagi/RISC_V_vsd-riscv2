@@ -104,7 +104,7 @@ module gpio_ip(
             gpio_in_reg <= 32'b0;
             out_enable <= 1'b0;
         end
-        else(gpio_addr) begin // The Register write will happen only if we have GPIO_ADDR == 0x2000_0000 . Since asked for only one 32bit Register.
+        else(gpio_addr) begin
             else if(write_enable == 1'b1) begin
                 gpio_in_reg <= gpio_in;
                 /*
@@ -172,24 +172,32 @@ endmodule
 
 ```
 
-# GPIO Simulation Waveform
+# GPIO Simulation Waveform : One 32 bit Register Only
 
-If we observe at T = 100ns. We see Writing to 00003D6C. After that write_enable = 1. Hence, Until write_enable becomes 1. It always gives previous written value.
+If we observe at T = 120ns. We see Writing to 00003D6C. After that write_enable = 1. Hence, Until write_enable becomes 1. It always gives previous written value.
 
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/211a91ae-67e6-4ff0-a9a8-4dc8eba3d36f" />
+<img width="1918" height="1030" alt="image" src="https://github.com/user-attachments/assets/1a26ebe5-7737-480b-9e5b-341510d77441" />
+
+
+<img width="1918" height="1032" alt="image" src="https://github.com/user-attachments/assets/5ff39698-924f-4b2f-b212-0a757774b255" />
 
 
 The write_enable = 1. We see multiple writes happening to the register on every clk posedge. 
 
-<img width="1918" height="337" alt="image" src="https://github.com/user-attachments/assets/7c5c9987-439f-40c0-a889-9640daf248b8" />
+<img width="1918" height="303" alt="image" src="https://github.com/user-attachments/assets/f27cf1a9-76ae-4351-af46-0e010f8e4b70" />
 
-GPIO REGISTER BANK
+
+
+# GPIO REGISTER BANK
 
 In the below waveform if we observe at Time 1520ns. The Register Number = 5, WE = 1 hence in the register 5 we see the output being written to it. At 1540ns we see WE = 1. The Register selected is 8'b3B = 59. Writing.  
 At Time 1560ns we observe that WE = 0. It reads the latest written Register value only as output. 
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/60a69f9f-503e-4660-93aa-12902bd6acc4" />
 
-<img width="1919" height="1055" alt="image" src="https://github.com/user-attachments/assets/544900d1-cfe5-47dc-bca3-45f36f5f0ffb" />
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/7ead550f-d0b9-480e-a68c-1b87ffef867c" />
+
+
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/4f86b7d7-a609-40f8-ab46-e88bf1f706d9" />
+
 
 
 # Integration the GPIO into the RISC-V Core
