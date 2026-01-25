@@ -3,7 +3,10 @@
 
 The Basic SoC Block daigram overview. The details as per my understanding. There are logic in between for the selection which is written in verilog not be considered here for accuracy. 
 
-<img width="3000" height="2928" alt="image" src="https://github.com/user-attachments/assets/80f86193-fb65-4469-a613-39cf38013d4f" />
+GPIO REGISTER at 0x2000_0000 as Address.
+
+<img width="1668" height="1714" alt="image" src="https://github.com/user-attachments/assets/bb193cdd-c1e9-42bb-b8d1-1a111cc49f3a" />
+
 
 
 Source and Destination Registers :
