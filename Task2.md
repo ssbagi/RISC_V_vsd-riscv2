@@ -123,8 +123,46 @@ TYPE 2 :
 Accessing the GPIO with addition of ADDR Field. Addition of the gpio_addr field.
 // Creation of the GPIO Register Set
 
-GPIO Output Register Address = 0x2000_0000 -------- Since asked for only one 32 bit Register.
+GPIO Output Register BANK ASLO : 
 
+module gpio_ip(
+    input clk,                           // Clock Input
+    input rst_n,                        // Active LOW RESET
+    input [31:0] gpio_addr,            // GPIO Address Input
+    input [31:0] gpio_in,             // GPIO Data Input
+    input write_enable,              // Write Enable Signal
+    output reg [31:0] gpio_out,     // GPIO Data Output
+    output reg out_enable          // Output Enable Signal
+); 
+    reg[31:0] gpio_in_reg[255:0]; // 32-bit wide Register : Array of 256 registers for multiple GPIO ports.
+    reg[7:0] out_reg = gpio_addr[7:0]; // Using lower 2 bits of address for selecting register.
+    reg[7:0] prev_addr; // To store previous address.
+    integer i;
+    // Synchronous Clock with Synchronous reset
+    always @(posedge clk) begin
+        if(!rst_n) begin
+            gpio_out <= 32'b0;
+            out_enable <= 1'b0;
+            // Reset all 256 registers 
+            for (i = 0; i < 256; i = i + 1) 
+                gpio_in_reg[i] <= 32'b0;
+        end
+        else begin
+            // Creation of 256 : Array of Registers. Writing to and Reading from multiple GPIO ports.
+            if(write_enable == 1'b1) begin
+                gpio_in_reg[out_reg] <= gpio_in;
+                gpio_out <= 32'bZ; // High Impedance State while writing to avoid unnecessary power consumption.
+                out_enable <= 1'b1;
+                prev_addr <= out_reg;
+            end
+            else if(write_enable == 1'b0) begin
+                gpio_out <= gpio_in_reg[prev_addr];
+                out_enable <= 1'b0;
+            end
+        end
+    end
+
+endmodule
 
 ```
 
@@ -138,6 +176,15 @@ If we observe at T = 100ns. We see Writing to 00003D6C. After that write_enable 
 The write_enable = 1. We see multiple writes happening to the register on every clk posedge. 
 
 <img width="1918" height="337" alt="image" src="https://github.com/user-attachments/assets/7c5c9987-439f-40c0-a889-9640daf248b8" />
+
+GPIO REGISTER BANK
+
+In the below waveform if we observe at Time 1520ns. The Register Number = 5, WE = 1 hence in the register 5 we see the output being written to it. At 1540ns we see WE = 1. The Register selected is 8'b3B = 59. Writing.  
+At Time 1560ns we observe that WE = 0. It reads the latest written Register value only as output. 
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/60a69f9f-503e-4660-93aa-12902bd6acc4" />
+
+<img width="1919" height="1055" alt="image" src="https://github.com/user-attachments/assets/544900d1-cfe5-47dc-bca3-45f36f5f0ffb" />
+
 
 
 
