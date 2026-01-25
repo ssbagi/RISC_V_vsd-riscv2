@@ -123,8 +123,7 @@ TYPE 2 :
 Accessing the GPIO with addition of ADDR Field. Addition of the gpio_addr field.
 // Creation of the GPIO Register Set
 
-wire GPIO_START_ADDR == 32'h2000_0000;
-wire GPIO_END_ADDR   == 32'h2000_00FF;
+GPIO Output Register Address = 0x2000_0000 -------- Since asked for only one 32 bit Register.
 
 
 ```
