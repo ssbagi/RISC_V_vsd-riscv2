@@ -78,45 +78,51 @@ Address Decoding is like this :
 wire isGPIO = isIO & (mem_addr[21:20] == 2'b00); // GPIO mapped at 0x0040_0000 - 0x005F_FFFF
 .write_enable(isGPIO & !mem_rstrb),       // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
 
+Hardcoded the GPIO ADDRESS = 0x2000_0000
+wire isGPIO = ((mem_addr & 32'hFFFF_FF00) == 32'h2000_0000); // GPIO mapped at 0x2000_0000  -------- AT SoC Level making this change.
+
 Since Only One 32-bit register. My design implemntation is like :
 - WE = 1 then only write and Output Signal = 1.
 - WE = 0 then only read. It reads previous value written to the Register. 
 
-
-
 module gpio_ip(
     input clk,
     input rst_n,
+    input [31:0] gpio_addr,
     input [31:0] gpio_in,
     input write_enable,
     output reg [31:0] gpio_out,
     output reg out_enable
 ); 
     reg[31:0] gpio_in_reg; // Memory to store the last written value. 32-bit wide Register. 
-
+    //GPIO Register Address is 0x2000_0000
+    // Using only one register for GPIO. So, no need of address decoding.
     // Synchronous Clock with Synchronous reset
     always @(posedge clk) begin
-        if(rst_n) begin
+        if(!rst_n) begin
             gpio_out <= 32'b0;
             gpio_in_reg <= 32'b0;
             out_enable <= 1'b0;
         end
-        else if(write_enable == 1'b1) begin
-            gpio_in_reg <= gpio_in;
-            /*
-                It's good not to change the state of the gpio_out ---------- Power consumption due to switching of states.
-                gpio_out <= 32'bz;
-                While writing we don't need to read the gpio_out. So, disable the output.
-            */
-            out_enable <= 1'b1;
-        end
-        else if(write_enable == 1'b0) begin
-            gpio_out <= gpio_in_reg;
-            out_enable <= 1'b0;
+        else(gpio_addr) begin // The Register write will happen only if we have GPIO_ADDR == 0x2000_0000 . Since asked for only one 32bit Register.
+            else if(write_enable == 1'b1) begin
+                gpio_in_reg <= gpio_in;
+                /*
+                    It's good not to change the state of the gpio_out ---------- Power consumption due to switching of states.
+                    gpio_out <= 32'bz;
+                    While writing we don't need to read the gpio_out. So, disable the output.
+                */
+                out_enable <= 1'b1;
+            end
+            else if(write_enable == 1'b0) begin
+                gpio_out <= gpio_in_reg;
+                out_enable <= 1'b0;
+            end
         end
     end
 
 endmodule
+
 
 TYPE 2 :
 
@@ -186,14 +192,12 @@ At Time 1560ns we observe that WE = 0. It reads the latest written Register valu
 <img width="1919" height="1055" alt="image" src="https://github.com/user-attachments/assets/544900d1-cfe5-47dc-bca3-45f36f5f0ffb" />
 
 
-
-
 # Integration the GPIO into the RISC-V Core
 
 The Whole Integration of the code.
 
 ```
-/**
+/*
  * Step 20: Creating a RISC-V processor
  * Using GNU tools
  */
@@ -271,6 +275,7 @@ module SOC (
    gpio_ip GPIO(
       .clk(clk),
       .rst_n(resetn),
+      .gpio_addr(isGPIO & mem_addr),			// isGPIO and mem_addr = 0x2000_0000
       .gpio_in(mem_wdata),                      // GPIO input from CPU.
       .write_enable(isGPIO & !mem_rstrb),       // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
       .gpio_out(GPIO_rdata),                    // GPIO output.
