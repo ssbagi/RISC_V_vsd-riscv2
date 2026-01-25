@@ -197,15 +197,7 @@ At Time 1560ns we observe that WE = 0. It reads the latest written Register valu
 The Whole Integration of the code.
 
 ```
-/*
- * Step 20: Creating a RISC-V processor
- * Using GNU tools
- */
 
-`default_nettype none
-`include "clockworks.v"
-`include "emitter_uart.v"
-`include "gpio.v"
 
 module SOC (
     //  input 	     CLK,  // system clock 
@@ -235,7 +227,7 @@ module SOC (
       .mem_wmask(mem_wmask)
    );
 
-   wire [31:0] RAM_rdata, GPIO_rdata;
+   wire [31:0] RAM_rdata, GPIO_rdata, GPIO_wdata;
    wire [29:0] mem_wordaddr = mem_addr[31:2];
    /*
       Memory-mapped IO in IO page : (0x0040_0000 : 0x007F_FFFF)
@@ -245,10 +237,11 @@ module SOC (
          - In binary : 0000_0100_xxxx_xxxx_xxxx_xxxx_xxxx_xxxx - 0000_0111_xxxx_xxxx_xxxx_xxxx_xxxx_xxxx
    */
    wire isIO   = mem_addr[22];
-   wire isGPIO = isIO & (mem_addr[21:20] == 2'b00); // GPIO mapped at 0x0040_0000 - 0x005F_FFFF
+   wire isGPIO = ((mem_addr & 32'hFFFF_FF00) == 32'h2000_0000); // GPIO mapped at 0x2000_0000
    wire isRAM  = !isIO;
    wire mem_wstrb = |mem_wmask;
-
+   wire GPIO_wdata = mem_wdata;
+   
    // Instantiate the Memory
    Memory RAM(
       .clk(clk),
@@ -271,17 +264,16 @@ module SOC (
 
    */
 
-   
    gpio_ip GPIO(
       .clk(clk),
       .rst_n(resetn),
-      .gpio_addr(isGPIO & mem_addr),			// isGPIO and mem_addr = 0x2000_0000
-      .gpio_in(mem_wdata),                      // GPIO input from CPU.
-      .write_enable(isGPIO & !mem_rstrb),       // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
+      .gpio_addr(isGPIO & mem_addr),              // GPIO address from CPU.
+      .gpio_in(GPIO_wdata),                      // GPIO input from CPU.
+      .write_enable(!mem_rstrb),                 // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
       .gpio_out(GPIO_rdata),                    // GPIO output.
       .out_enable(gpio_out_enable)              // GPIO output enable signal high during write operation from CPU to GPIO.
    );
-   
+
    // Memory-mapped IO in IO page, 1-hot addressing in word address. 
    localparam IO_LEDS_bit      = 0;  // W five leds 
    localparam IO_UART_DAT_bit  = 1;  // W data to send (8 bits) 
@@ -294,7 +286,7 @@ module SOC (
       end
    end
 
-   wire uart_valid = isGPIO & isIO & mem_wstrb & mem_wordaddr[IO_UART_DAT_bit];
+   wire uart_valid = isIO & mem_wstrb & mem_wordaddr[IO_UART_DAT_bit];
    wire uart_ready;
    
    corescore_emitter_uart #(
@@ -312,7 +304,8 @@ module SOC (
 
    wire [31:0] IO_rdata = mem_wordaddr[IO_UART_CNTL_bit] ? { 22'b0, !uart_ready, 9'b0}: 32'b0;
    
-   assign mem_rdata = isRAM ? RAM_rdata : isIO ? IO_rdata : (isGPIO & !mem_rstrb) ? GPIO_rdata : 32'hXXXX_XXXX;
+   assign mem_rdata = isRAM ? RAM_rdata : IO_rdata ;
+   assign mem_rdata = isGPIO & !mem_rstrb ? GPIO_rdata : mem_rdata ;
    
    
    `ifdef BENCH
