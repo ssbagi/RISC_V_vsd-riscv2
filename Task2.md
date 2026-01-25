@@ -72,6 +72,18 @@ Participants will:
 ```
 GPIO IP VERILOG CODE
 
+Type 1 :
+
+Address Decoding is like this :
+wire isGPIO = isIO & (mem_addr[21:20] == 2'b00); // GPIO mapped at 0x0040_0000 - 0x005F_FFFF
+.write_enable(isGPIO & !mem_rstrb),       // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
+
+Since Only One 32-bit register. My design implemntation is like :
+- WE = 1 then only write and Output Signal = 1.
+- WE = 0 then only read. It reads previous value written to the Register. 
+
+
+
 module gpio_ip(
     input clk,
     input rst_n,
@@ -105,6 +117,16 @@ module gpio_ip(
     end
 
 endmodule
+
+TYPE 2 :
+
+Accessing the GPIO with addition of ADDR Field. Addition of the gpio_addr field.
+// Creation of the GPIO Register Set
+
+wire GPIO_START_ADDR == 32'h2000_0000;
+wire GPIO_END_ADDR   == 32'h2000_00FF;
+
+
 ```
 
 # GPIO Simulation Waveform
