@@ -5,7 +5,9 @@ The Basic SoC Block daigram overview. The details as per my understanding. There
 
 GPIO REGISTER at 0x2000_0000 as Address.
 
-<img width="1668" height="1600" alt="image" src="https://github.com/user-attachments/assets/e03effbd-706e-4fae-9a1a-fda441249f0e" />
+
+<img width="1668" height="1577" alt="image" src="https://github.com/user-attachments/assets/965dec3d-bcad-4318-a3b7-8a18ea149bcf" />
+
 
 
 Source and Destination Registers :
