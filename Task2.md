@@ -261,13 +261,25 @@ The Whole Integration of the code.
 
 ```
 
+/**
+ * Step 20: Creating a RISC-V processor
+ * Using GNU tools
+ */
 
-module SOC (
-    //  input 	     CLK,  // system clock 
-    input 	     RESET,// reset button
+`default_nettype none
+`include "clockworks.v"
+`include "emitter_uart.v"
+`include "gpio.v"
+`include "memory.v"
+`include "Processor.v"
+
+
+ module SOC (
+    input wire	     CLK,  // system clock 
+    input wire	     RESET,// reset button
     output reg [4:0] LEDS, // system LEDs
-    input 	     RXD,  // UART receive
-    output 	     TXD   // UART transmit
+    input wire	     RXD,  // UART receive
+    output wire 	     TXD   // UART transmit
 );
 
    wire clk;
@@ -278,11 +290,13 @@ module SOC (
    wire mem_rstrb;
    wire [31:0] mem_wdata;
    wire [3:0]  mem_wmask;
+   //assign clk = CLK;
+   //assign resetn = RESET;
 
    // Instantiate the RISC-V Processor
    Processor CPU(
       .clk(clk),
-      .resetn(resetn),		 
+      .resetn(!resetn),		 
       .mem_addr(mem_addr),
       .mem_rdata(mem_rdata),
       .mem_rstrb(mem_rstrb),
@@ -303,10 +317,10 @@ module SOC (
    wire isGPIO = ((mem_addr & 32'hFFFF_FF00) == 32'h2000_0000); // GPIO mapped at 0x2000_0000
    wire isRAM  = !isIO;
    wire mem_wstrb = |mem_wmask;
-   wire GPIO_wdata = mem_wdata;
+   assign GPIO_wdata = mem_wdata;
    
    // Instantiate the Memory
-   Memory RAM(
+   Memory RAM (
       .clk(clk),
       .mem_addr(mem_addr),
       .mem_rdata(RAM_rdata),
@@ -327,15 +341,15 @@ module SOC (
 
    */
 
-   gpio_ip GPIO(
+   gpio_ip GPIO (
       .clk(clk),
-      .rst_n(resetn),
-      .gpio_addr(isGPIO & mem_addr),              // GPIO address from CPU.
-      .gpio_in(GPIO_wdata),                      // GPIO input from CPU.
-      .write_enable(!mem_rstrb),                 // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
-      .gpio_out(GPIO_rdata),                    // GPIO output.
-      .out_enable(gpio_out_enable)              // GPIO output enable signal high during write operation from CPU to GPIO.
-   );
+      .rst_n(!resetn),
+      .gpio_en(isGPIO),
+      .gpio_in(GPIO_wdata),
+      .write_enable(!mem_rstrb),
+      .gpio_out(GPIO_rdata),
+      .out_enable(gpio_out_enable)
+   ); 
 
    // Memory-mapped IO in IO page, 1-hot addressing in word address. 
    localparam IO_LEDS_bit      = 0;  // W five leds 
@@ -367,8 +381,7 @@ module SOC (
 
    wire [31:0] IO_rdata = mem_wordaddr[IO_UART_CNTL_bit] ? { 22'b0, !uart_ready, 9'b0}: 32'b0;
    
-   assign mem_rdata = isRAM ? RAM_rdata : IO_rdata ;
-   assign mem_rdata = isGPIO & !mem_rstrb ? GPIO_rdata : mem_rdata ;
+   assign mem_rdata = isGPIO & !mem_rstrb ? GPIO_rdata : isRAM ? RAM_rdata : IO_rdata;
    
    
    `ifdef BENCH
@@ -382,6 +395,7 @@ module SOC (
    
    wire clk_int;
 
+   
    SB_HFOSC #(
    .CLKHF_DIV("0b10") // 12 MHz
    ) hfosc (
@@ -389,11 +403,12 @@ module SOC (
       .CLKHFEN(1'b1),
       .CLKHF(clk_int)
    );
-
+  
 
    // Gearbox and reset circuitry.
    Clockworks CW(
-     .CLK(clk_int),
+     //.CLK(clk_int),
+     .CLK(CLK),
      .RESET(RESET),
      .clk(clk),
      .resetn(resetn)
@@ -401,6 +416,7 @@ module SOC (
 
 
 endmodule
+
 
 ```
 
