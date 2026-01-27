@@ -422,7 +422,12 @@ endmodule
 
 # Whole SoC Waveform
 
-Developing the Testbench : I will use the Waveform simulation for the SoC in the Toolchain I could not do. 
+The Testcase
+<img width="940" height="481" alt="image" src="https://github.com/user-attachments/assets/d6f0c0f9-6c25-4fd0-8114-a03cd038189f" />
+
+The Memory and Processsor Interaction
+<img width="940" height="507" alt="image" src="https://github.com/user-attachments/assets/19fc8561-627d-4b6e-946f-6e74b97e4039" />
+
 
 
 # YOSYS, ROUTING FPGA COMPIALTION
