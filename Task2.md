@@ -81,6 +81,7 @@ Type 1 :
 Address Decoding is like this : Hardcoded the GPIO ADDRESS = 0x2000_0000
 
 wire isGPIO = ((mem_addr & 32'hFFFF_FF00) == 32'h2000_0000); // GPIO mapped at 0x2000_0000  -------- AT SoC Level making this change.
+At IP level when passing the gpio_addr = isGPIO && mem_addr. This will enable for that specific address only. 
 write_enable(isGPIO & !mem_rstrb),       // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
 
 Since Only One 32-bit register. My design implemntation is like :
