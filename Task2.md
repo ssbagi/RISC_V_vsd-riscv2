@@ -420,7 +420,84 @@ endmodule
 
 # Whole SoC Waveform
 
-The Testcase
+## The Testcase
+
+The C Testcase to check the access of the GPIO Register and stuff 
+
+```
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#define UART_TX   (*(volatile unsigned int*)0x00400000)
+#define GPIO_ADDR (*(volatile unsigned int*)0x20000000)
+
+void putuartchar(char c) {
+    UART_TX = c;
+}
+
+void print_str(const char *s) {
+    while (*s) {
+        putchar(*s++);
+    }
+}
+
+void print_uint(unsigned int x) {
+    char buf[10];
+    int i = 0;
+    
+    if(x == 0) {
+        putchar('\0');
+        return;
+    }
+    
+    while(x > 0) {
+        buf[i++] = '0' + (x % 10);
+        x /= 10;
+    }
+    
+    while (i--) putchar(buf[i]);
+}
+
+int main() {
+    unsigned int x = 0, y = 0;
+    for(int i = 0; i < 5; i++) {
+        GPIO_ADDR = 100 + i;
+        y = GPIO_ADDR;
+        x = i;
+        //printf("GPIO Read Value : %d", y); We cannot use printf. Need to use the UART Interface.
+        print_str("GPIO Read Value");
+        print_uint(y);
+        putuartchar('\n');
+    }
+    return 0;
+}
+
+```
+
+TYPE 2 : Normal C Testcase
+
+```
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#define GPIO_ADDR (*(volatile unsigned int*)0x20000000)
+
+int main() {
+    unsigned int x = 0, y = 0;
+    for(int i = 0; i < 5; i++) {
+        GPIO_ADDR = 100 + i;
+        y = GPIO_ADDR;
+        x = i;
+    }
+    return 0;
+}
+
+```
+
 <img width="940" height="481" alt="image" src="https://github.com/user-attachments/assets/d6f0c0f9-6c25-4fd0-8114-a03cd038189f" />
 
 The Memory and Processsor Interaction
