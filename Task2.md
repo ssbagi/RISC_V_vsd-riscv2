@@ -78,12 +78,10 @@ GPIO IP VERILOG CODE : I have developed three Types. I prefer Type 3 for integra
 
 Type 1 :
 
-Address Decoding is like this :
-wire isGPIO = isIO & (mem_addr[21:20] == 2'b00); // GPIO mapped at 0x0040_0000 - 0x005F_FFFF
-.write_enable(isGPIO & !mem_rstrb),       // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
+Address Decoding is like this : Hardcoded the GPIO ADDRESS = 0x2000_0000
 
-Hardcoded the GPIO ADDRESS = 0x2000_0000
 wire isGPIO = ((mem_addr & 32'hFFFF_FF00) == 32'h2000_0000); // GPIO mapped at 0x2000_0000  -------- AT SoC Level making this change.
+write_enable(isGPIO & !mem_rstrb),       // GPIO WE = 1 when CPU wants to write to GPIO. Otherwise it will be read operation.
 
 Since Only One 32-bit register. My design implemntation is like :
 - WE = 1 then only write and Output Signal = 1.
