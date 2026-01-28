@@ -143,7 +143,7 @@ module gpio_ip(
     output reg out_enable          // Output Enable Signal
 ); 
     reg[31:0] gpio_in_reg[255:0]; // 32-bit wide Register : Array of 256 registers for multiple GPIO ports.
-    reg[7:0] out_reg = gpio_addr[7:0]; // Using lower 2 bits of address for selecting register.
+    reg[7:0] out_reg = gpio_addr[7:0]; // Using lower 8 bits of address for selecting register : Register Number.
     reg[7:0] prev_addr; // To store previous address.
     integer i;
     // Synchronous Clock with Synchronous reset
