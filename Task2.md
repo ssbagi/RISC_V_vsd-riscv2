@@ -421,65 +421,31 @@ endmodule
 
 # Whole SoC Waveform
 
+The Whole SoC Waveform : 
+
+If we observe in below Wavform we observe that isGPIO is enable only for the Address 0x2000000 . We write to the GPIO register and readback the latest data from the GPIO register also. 
+
+<img width="1919" height="1030" alt="image" src="https://github.com/user-attachments/assets/18f3468b-54b8-470d-a35f-937c953d0936" />
+
+
+<img width="1919" height="1031" alt="image" src="https://github.com/user-attachments/assets/0b59a8b5-789b-4f5e-ac43-80724179814c" />
+
+
+<img width="1919" height="1032" alt="image" src="https://github.com/user-attachments/assets/1c9f2b8b-31e8-4bbe-a775-ac46813c547a" />
+
+
+<img width="1919" height="1035" alt="image" src="https://github.com/user-attachments/assets/260db81b-c9a5-4628-bcb8-42c3aee53a4a" />
+
+
+<img width="1919" height="1031" alt="image" src="https://github.com/user-attachments/assets/c6e4c20b-b319-4c83-8565-568df98cf1a9" />
+
+
 ## The Testcase
 
 The C Testcase to check the access of the GPIO Register and stuff 
 
 ```
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-#define UART_TX   (*(volatile unsigned int*)0x00400000)
-#define GPIO_ADDR (*(volatile unsigned int*)0x20000000)
-
-void putuartchar(char c) {
-    UART_TX = c;
-}
-
-void print_str(const char *s) {
-    while (*s) {
-        putchar(*s++);
-    }
-}
-
-void print_uint(unsigned int x) {
-    char buf[10];
-    int i = 0;
-    
-    if(x == 0) {
-        putchar('\0');
-        return;
-    }
-    
-    while(x > 0) {
-        buf[i++] = '0' + (x % 10);
-        x /= 10;
-    }
-    
-    while (i--) putchar(buf[i]);
-}
-
-int main() {
-    unsigned int x = 0, y = 0;
-    for(int i = 0; i < 5; i++) {
-        GPIO_ADDR = 100 + i;
-        y = GPIO_ADDR;
-        x = i;
-        //printf("GPIO Read Value : %d", y); We cannot use printf. Need to use the UART Interface.
-        print_str("GPIO Read Value");
-        print_uint(y);
-        putuartchar('\n');
-    }
-    return 0;
-}
-
-```
-
-TYPE 2 : Normal C Testcase
-
-```
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -487,15 +453,52 @@ TYPE 2 : Normal C Testcase
 
 #define GPIO_ADDR (*(volatile unsigned int*)0x20000000)
 
-int main() {
-    unsigned int x = 0, y = 0;
-    for(int i = 0; i < 5; i++) {
-        GPIO_ADDR = 100 + i;
-        y = GPIO_ADDR;
-        x = i;
+// Delay means introduce NOP opcodes into the code : Wow Learnt.
+#define DELAY 10
+
+// Software delay for bare-metal RISC-V
+void wait_cycles(volatile int count) {
+    while (count-- > 0) {
+        __asm__ volatile("nop");
     }
+}
+
+int main() {
+    unsigned int x, y, i = 100;
+
+    GPIO_ADDR = 100 + i;
+    wait_cycles(DELAY);  // Pause
+    y = GPIO_ADDR;
+    wait_cycles(DELAY);  // Pause
+
+    GPIO_ADDR = 100 + i*2;
+    wait_cycles(DELAY);  // Pause
+    y = GPIO_ADDR;
+    wait_cycles(DELAY);  // Pause
+
+    GPIO_ADDR = 100 + i*3;
+    wait_cycles(DELAY);  // Pause
+    y = GPIO_ADDR;
+    wait_cycles(DELAY);  // Pause
+
+    GPIO_ADDR = 100 + i*4;
+    wait_cycles(DELAY);  // Pause
+    y = GPIO_ADDR;
+    wait_cycles(DELAY);  // Pause
+
+    GPIO_ADDR = 100 + i*5;
+    wait_cycles(DELAY);  // Pause
+    y = GPIO_ADDR;
+    wait_cycles(DELAY);  // Pause
+
+    GPIO_ADDR = 100 + i*6;
+    wait_cycles(DELAY);  // Pause
+    y = GPIO_ADDR;
+    wait_cycles(DELAY);  // Pause
+
     return 0;
 }
+
 
 ```
 
