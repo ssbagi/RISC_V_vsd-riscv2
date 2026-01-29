@@ -5,9 +5,9 @@ The Basic SoC Block daigram overview. The details as per my understanding. There
 
 GPIO REGISTER at 0x2000_0000 as Address.
 
+**NOTE ** : Due to some reason in Modelsim its doesn't work.  
 
 <img width="1668" height="1577" alt="image" src="https://github.com/user-attachments/assets/965dec3d-bcad-4318-a3b7-8a18ea149bcf" />
-
 
 
 Source and Destination Registers :
@@ -501,13 +501,6 @@ int main() {
 
 
 ```
-
-<img width="940" height="481" alt="image" src="https://github.com/user-attachments/assets/d6f0c0f9-6c25-4fd0-8114-a03cd038189f" />
-
-The Memory and Processsor Interaction
-<img width="940" height="507" alt="image" src="https://github.com/user-attachments/assets/19fc8561-627d-4b6e-946f-6e74b97e4039" />
-
-
 
 # YOSYS, ROUTING FPGA COMPIALTION
 
