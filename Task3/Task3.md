@@ -10,11 +10,24 @@ Design a proper register map, implement direction control, and validate everythi
 
 <img width="542" height="206" alt="image" src="https://github.com/user-attachments/assets/380d5ab3-8692-4d78-8d8d-09b24226e802" />
 
+# Learning from Task2 : Correction in Task3
 
+Actually in designing GPIO IP I made a blunder mistake i.e, there is no seperate gpio_in and gpio_out pin concept. Actually GPIO : Bidirectional pins.
+I guess this Task3 hidden objective was to correct my misunderstanding and correct my design of IP in Task2.
 
+For reference : https://www.ti.com/lit/ug/spruf95/spruf95.pdf?ts=1769786085619&ref_url=https%253A%252F%252Fin.search.yahoo.com%252F 
 
+```
 
+module gpio_ip(
+    input wire clk,
+    input wire rst_n,
+    input wire gpio_en,               // Address Decoding : GPIO Enable Signal : To make sure only GPIO address is accessed.
+    input [31:0] gpio_addr,          //  GPIO Address Input
+    inout wire [31:0] gpio,         //   32 GPIO Input and Output pins
+); 
 
+```
 
 
 
