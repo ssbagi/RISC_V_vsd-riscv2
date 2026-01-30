@@ -7,7 +7,7 @@ GPIO REGISTER at 0x2000_0000 as Address.
 
 **NOTE ** : Due to some reason in Modelsim its doesn't work.  
 
-**Learning Lesson **: Input and Output Pins I made it separately. The pins I need to make it as Input and Output in 32 pins only. Instead of making seperatly the GPIO_IN and GPIO_OUT.
+**Learning Lesson **: Input and Output Pins I made it separately. The pins I need to make it as Input and Output in 32 pins only. Instead of making seperatly the GPIO_IN and GPIO_OUT. I need to have single set of 32 pins only.
 
 <img width="1668" height="1577" alt="image" src="https://github.com/user-attachments/assets/965dec3d-bcad-4318-a3b7-8a18ea149bcf" />
 
