@@ -32,13 +32,13 @@ module gpio_ip(
 # High Level Overiview
 
 Cycle 1 : Direction Register
-    gpio_addr = 0x04
-    Read the contents of the GPIO pins.
-        - 1 : Output    
-        - 0 : Input   
-    Example : 
-        - Lets say Higher Halfword = 16'hFFFF | Lower Halfword = 16'h0000.
-        - 16pins are configured as Output and 16pins are configured as Input.
+- gpio_addr = 0x04
+- Read the contents of the GPIO pins.
+  - 1 : Output
+  - 0 : Input   
+- Example :
+  - Lets say Higher Halfword = 16'hFFFF | Lower Halfword = 16'h0000.
+  - 16pins are configured as Output and 16pins are configured as Input.
     
 
 
