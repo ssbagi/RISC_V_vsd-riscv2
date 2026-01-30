@@ -36,7 +36,7 @@ Cycle 1 : Direction Register
 - Read the contents of the GPIO pins.
   - 1 : Output
   - 0 : Input   
-- Example :
+- Example : gpio_addr = 0x04 | gpio = 32'hFFFF_0000
   - Lets say Higher Halfword = 16'hFFFF | Lower Halfword = 16'h0000.
   - 16pins are configured as Output and 16pins are configured as Input.
     
