@@ -463,6 +463,8 @@ void wait_cycles(volatile int count) {
     }
 }
 
+// Addition of the delay i.e., NOP : TO avoid RAW Hazard. RISC-V is an In-order Processor. 
+
 int main() {
     unsigned int x, y, i = 100;
 
