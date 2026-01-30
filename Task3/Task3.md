@@ -17,6 +17,9 @@ I guess this Task3 hidden objective was to correct my misunderstanding and corre
 
 For reference : https://www.ti.com/lit/ug/spruf95/spruf95.pdf?ts=1769786085619&ref_url=https%253A%252F%252Fin.search.yahoo.com%252F 
 
+<img width="777" height="436" alt="image" src="https://github.com/user-attachments/assets/8e380311-096a-46b4-96c1-f228fd40598b" />
+
+
 ```
 
 module gpio_ip(
