@@ -7,8 +7,13 @@ GPIO REGISTER at 0x2000_0000 as Address.
  
 
 # Learning Lesson 
-Input and Output Pins I made it separately. The pins I need to make it as Input and Output in 32 pins only. Instead of making seperatly the GPIO_IN and GPIO_OUT. I need to have single set of 32 pins only.
+
+Input and Output Pins I made it separately. 
+gpio_out  :----> Converted to Single BUS GPIO pins.
+GPIO : The same pin acts as Input and Output.
 **I am correcting this in the Task3**. 
+
+<img width="628" height="352" alt="image" src="https://github.com/user-attachments/assets/9c1c1321-84cc-4050-8781-7e55c790d216" />
 
 <img width="1668" height="1577" alt="image" src="https://github.com/user-attachments/assets/965dec3d-bcad-4318-a3b7-8a18ea149bcf" />
 
