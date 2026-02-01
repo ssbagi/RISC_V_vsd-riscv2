@@ -18,6 +18,21 @@ This repository contains the IP‑level verification environment for a custom 32
 
 The verification is performed using a directed Verilog testbench with waveform dumping and a structured set of 16 functional, boundary, and stress‑oriented testcases.
 
+### Method 1 :
+- I am reusing the same gpio_in and gpio_out pins even for writing the Master or Even from the External World.
+
+#### Method 2 : 
+The wdata, rdata, gpio_en and gpio_out.
+- wdata      :  Master sending to GPIO.
+- rdata      :  GPIO sending to Master.
+- gpio_in    :  External GPIO Input world connection.
+- gpio_out   :  External GPIO Output world connection.
+
+In actual way GPIO pins i.e., gpio_in and gpio_out has to be the same pins as shown in the below diagram.
+
+<img width="835" height="312" alt="image" src="https://github.com/user-attachments/assets/458856eb-dc96-4e4b-b8f1-dedfea0760e9" />
+
+
 ## Design Under Test (DUT)
 The DUT is implemented in gpio.v
 
