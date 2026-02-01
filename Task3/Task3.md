@@ -105,14 +105,38 @@ Using Icarus Verilog:
 
 ## Directory Structure
 
-├── gpio.v              # DUT
-├── gpio_tb.v           # Testbench with 16 testcases
-├── gpio_fullsuite.vcd  # Waveform dump (generated)
-└── README.md           # This file
+- gpio.v              # DUT
+- gpio_tb.v           # Testbench with 16 testcases
+- gpio_fullsuite.vcd  # Waveform dump (generated)
+- README.md           # This file
+
+
+## Waveforms Results
+
+### Testcase 1 : Odd OUTPUT, Even INPUT
+In the below waveform we observe that the writing the direction register and DATA register and the READ register when it is called based on the Direction register configured which GPIO pin acts as Output or Input. 
+
+Now the READ Register reads the pins and stores in the values in the register. On reading this we get the value back.
+
+![GPIO_TESTSUITE_WAVEFORM1](https://github.com/user-attachments/assets/1895e1ca-b7f5-4d38-8324-0b91618d5dcb)
 
 
 
+### Testcase 2 : Odd INPUT, Even OUTPUT
 
+![GPIO_TESTSUITE_WAVEFORM2](https://github.com/user-attachments/assets/a150b42c-1775-4db5-a75f-da878b2eefc5)
+
+
+
+### Testcase 3 : Lower 16 INPUT, Upper 16 OUTPUT
+
+![GPIO_TESTSUITE_WAVEFORM3](https://github.com/user-attachments/assets/a9fa0930-e3d2-4289-9ad1-6d9734c50298)
+
+
+
+### Testcase 4 : Lower 16 OUTPUT, Upper 16 INPUT
+
+![GPIO_TESTSUITE_WAVEFORM4](https://github.com/user-attachments/assets/28cbd2f8-63fd-40ac-8e9f-f90e67ef175d)
 
 
 
