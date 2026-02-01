@@ -124,6 +124,27 @@ In the below waveform we write the configuration to the DIR Register through wda
 <img width="1918" height="1017" alt="image" src="https://github.com/user-attachments/assets/5c9d1d94-42a9-4eb2-b356-c4abc15f4682" />
 
 
+## RISCV SOC Integration
+
+
+
+### Waveform
+
+<img width="1918" height="1022" alt="image" src="https://github.com/user-attachments/assets/e71d0fb4-f1e1-4766-be4a-24008ba9a0de" />
+
+
+<img width="1918" height="1018" alt="image" src="https://github.com/user-attachments/assets/e27dce67-854a-4073-b7d7-4d1e291037fb" />
+
+
+<img width="1918" height="1020" alt="image" src="https://github.com/user-attachments/assets/87139a76-dbf0-402b-b78e-ad79330585a5" />
+
+
+<img width="1918" height="1018" alt="image" src="https://github.com/user-attachments/assets/c24f6e3b-fde3-4351-ab92-0d48d7ee409c" />
+
+
+
+
+
 
 
 
