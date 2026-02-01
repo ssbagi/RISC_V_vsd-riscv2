@@ -9,7 +9,6 @@ Design a proper register map, implement direction control, and validate everythi
 **Goal** : Task strengthens your understanding of memory-mapped I/O and prepares you for more advanced IPs used in real SoCs
 
 
-
 # IP Level Design and Verification code
 
 ## Overview
@@ -18,10 +17,6 @@ This repository contains the IP‑level verification environment for a custom 32
 
 The verification is performed using a directed Verilog testbench with waveform dumping and a structured set of 16 functional, boundary, and stress‑oriented testcases.
 
-### Method 1 :
-- I am reusing the same gpio_in and gpio_out pins even for writing the Master or Even from the External World.
-
-#### Method 2 : 
 The wdata, rdata, gpio_en and gpio_out.
 - wdata      :  Master sending to GPIO.
 - rdata      :  GPIO sending to Master.
