@@ -30,6 +30,7 @@ The wdata, rdata, gpio_en and gpio_out.
 
 In actual way GPIO pins i.e., gpio_in and gpio_out has to be the same pins as shown in the below diagram.
 
+![GPIO_IP_PIN](https://github.com/user-attachments/assets/0191ef57-fc76-4965-a481-7a06e33ff1ea)
 
 
 ## Design Under Test (DUT)
