@@ -107,29 +107,27 @@ Using Icarus Verilog:
 ## Waveforms Results
 
 ### Testcase 1 : Odd OUTPUT, Even INPUT
-In the below waveform we observe that the writing the direction register and DATA register and the READ register when it is called based on the Direction register configured which GPIO pin acts as Output or Input. 
 
-Now the READ Register reads the pins and stores in the values in the register. On reading this we get the value back.
+In the below waveform we write the configuration to the DIR Register through wdata. In the DATA Register we write through the wdata. If we observe since the DATA Register the writing updates the output values also. Hence the gpio_out we get the values. In the READ Register reads the current the GPIO_PIN values. 
 
-![GPIO_TESTSUITE_WAVEFORM1](https://github.com/user-attachments/assets/1895e1ca-b7f5-4d38-8324-0b91618d5dcb)
-
+<img width="1918" height="1017" alt="image" src="https://github.com/user-attachments/assets/22329e63-ca55-4040-a22c-ffcd631851bd" />
 
 
 ### Testcase 2 : Odd INPUT, Even OUTPUT
 
-![GPIO_TESTSUITE_WAVEFORM2](https://github.com/user-attachments/assets/a150b42c-1775-4db5-a75f-da878b2eefc5)
+<img width="1918" height="1018" alt="image" src="https://github.com/user-attachments/assets/f4b8066a-c817-40d0-82ad-b7e796adc002" />
 
 
 
 ### Testcase 3 : Lower 16 INPUT, Upper 16 OUTPUT
 
-![GPIO_TESTSUITE_WAVEFORM3](https://github.com/user-attachments/assets/a9fa0930-e3d2-4289-9ad1-6d9734c50298)
-
+<img width="1918" height="1020" alt="image" src="https://github.com/user-attachments/assets/2fc70895-af92-4209-a337-b73d37cd1ab3" />
 
 
 ### Testcase 4 : Lower 16 OUTPUT, Upper 16 INPUT
 
-![GPIO_TESTSUITE_WAVEFORM4](https://github.com/user-attachments/assets/28cbd2f8-63fd-40ac-8e9f-f90e67ef175d)
+<img width="1918" height="1017" alt="image" src="https://github.com/user-attachments/assets/5c9d1d94-42a9-4eb2-b356-c4abc15f4682" />
+
 
 
 
