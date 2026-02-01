@@ -8,8 +8,6 @@ Design a proper register map, implement direction control, and validate everythi
 
 **Goal** : Task strengthens your understanding of memory-mapped I/O and prepares you for more advanced IPs used in real SoCs
 
-![GPIO_IP_PIN](https://github.com/user-attachments/assets/410786f3-1c71-4d82-bdff-37fbb5874b37)
-
 
 
 # IP Level Design and Verification code
