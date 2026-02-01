@@ -32,23 +32,83 @@ module gpio_ip(
 
 ```
 
-# High Level Overiview
+# IP Level Design and Verification code
 
-Cycle 1 : Direction Register
-- gpio_addr = 0x04
-- Read the contents of the GPIO pins.
-  - 1 : Output
-  - 0 : Input   
-- Example : gpio_addr = 0x04 | gpio = 32'hFFFF_0000
-  - Lets say Higher Halfword = 16'hFFFF | Lower Halfword = 16'h0000.
-  - 16pins are configured as Output and 16pins are configured as Input.
-    
+## Overview
+
+This repository contains the IP‑level verification environment for a custom 32‑bit General‑Purpose Input/Output (GPIO) module. The objective of this environment is to validate the functional correctness, register behavior, direction control, and robustness of the GPIO IP before SoC‑level integration.
+
+The verification is performed using a directed Verilog testbench with waveform dumping and a structured set of 16 functional, boundary, and stress‑oriented testcases.
+
+## Design Under Test (DUT)
+The DUT is implemented in gpio.v
+
+It exposes the following key interfaces:
+- gpio_in – External input pins
+- gpio_out – Output pins driven by DATA register
+- gpio_oe – Output enable (derived from DIR register)
+- gpio_addr – Memory‑mapped address
+- gpio_en – Access enable
+- write_enable – Read/Write control
+- clk, rst_n – Clock and reset
+
+## Register Map 
+| Register | Address      | Description                          | 
+|----------|--------------|--------------------------------------| 
+| DATA     | 0x2000_0000  | Output data register                 | 
+| DIR      | 0x2000_0004  | Direction register (1 = OUT, 0 = IN) | 
+| READ     | 0x2000_0008  | Reflected input/output state         |
+
+The READ register merges gpio_in and gpio_out based on DIR bits.
+
+## Testbench Structure
+The testbench (gpio_tb.v) includes:
+- Clock generation (10ns period)
+- Reset sequencing
+- DUT instantiation
+- Memory‑mapped register access
+- External input stimulus injection
+- Waveform dumping (gpio_fullsuite.vcd)
+- A complete suite of 16 directed testcases
+
+All stimulus is applied through a single procedural block for deterministic execution.
+
+## Testcase Summary
+
+The verification suite contains 16 total testcases, grouped into four categories:
+
+### Group A — Basic Functional Tests (1–4)
+- Validates direction‑based merging of input/output pins:
+- Odd OUTPUT, Even INPUT (DIR = AAAAAAAA)
+- Odd INPUT, Even OUTPUT (DIR = 55555555)
+- Lower‑16 INPUT, Upper‑16 OUTPUT (DIR = FFFF0000)
+- Lower‑16 OUTPUT, Upper‑16 INPUT (DIR = 0000FFFF)
+
+### Group B — Extended Functional Tests (5–8)
+Adds DATA register readback:
+DIR → DATA WRITE → DATA READ → READ REGISTER
+
+### Group C — Extreme Direction Patterns (9–12)
+Boundary and corner cases: 9. All INPUT (00000000) 10. All OUTPUT (FFFFFFFF) 11. Upper‑8 OUTPUT, Lower‑24 INPUT (FF000000) 12. Upper‑24 OUTPUT, Lower‑8 INPUT (00FFFFFF)
+
+### Group D — Hazard & Stress Tests (13–16)
+Robustness and timing sensitivity: 13. Back‑to‑back DATA writes 14. Read‑after‑write hazard 15. Glitching gpio_en mid‑transaction 16. Mixed DIR with random external input reflection
+
+## How to Run
+Using Icarus Verilog:
+
+- iverilog -o gpio_tb gpio_tb.v gpio.v
+- vvp gpio_tb
+- gtkwave gpio_fullsuite.vcd
 
 
 
+## Directory Structure
 
-
-
+├── gpio.v              # DUT
+├── gpio_tb.v           # Testbench with 16 testcases
+├── gpio_fullsuite.vcd  # Waveform dump (generated)
+└── README.md           # This file
 
 
 
